@@ -43,8 +43,8 @@ def create_app():
         }
     }
 
-        # Configuración del tiempo de expiración de los tokens JWT
-    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=180)  # Cambia esto según tus necesidades
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=180) 
+    app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)  # TO-DO: Implementar la lógica para refrescar el token
 
     # Initialize extensions
     db.init_app(app)

@@ -8,10 +8,6 @@ client_blp = Blueprint('Client', 'client', url_prefix='/client', description='Cl
 
 class ClientResource(MethodView):
 
-    #@client_blp.before_request
-    #def before_jwt():
-    #    verify_jwt_in_request()
-
     @client_blp.route('/getAll/<int:user_id>', methods=['GET'])
     @jwt_required()
     @client_blp.response(200, ClientOutputSchema(many=True))

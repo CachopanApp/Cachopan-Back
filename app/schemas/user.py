@@ -9,6 +9,10 @@ class UserSchema(SQLAlchemyAutoSchema):
 
 class UserTokenSchema(Schema):
     access_token = fields.String(required=True)
+    refresh_token = fields.String(required=True)
+
+class UserAccessSchema(Schema):
+    access_token = fields.String(required=True)
 
 class UserLoginSchema(Schema):
     name = fields.String(required=True)
