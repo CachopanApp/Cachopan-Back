@@ -1,5 +1,5 @@
 from flask.views import MethodView
-from flask_jwt_extended import jwt_required, verify_jwt_in_request
+from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
 from app.schemas.client import *
 from app.services.client import *
@@ -36,7 +36,7 @@ class ClientResource(MethodView):
     
     @client_blp.route('/update/<int:client_id>', methods=['PUT'])
     @jwt_required()
-    @client_blp.arguments(ClientInputSchema)
+    @client_blp.arguments(ClientUpdateSchema)
     @client_blp.response(200, ClientOutputSchema)
     @client_blp.doc(security=[{"bearerAuth": []}])
     def put(client, client_id):

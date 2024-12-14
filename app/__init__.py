@@ -9,6 +9,8 @@ from .config import Config
 from app.models import * # Import all models
 from app.routes.user import user_blp 
 from app.routes.client import client_blp
+from app.routes.article import article_blp
+from app.routes.sale import sale_blp
 
 def create_app():
 
@@ -86,5 +88,7 @@ def create_app():
 
     api.register_blueprint(user_blp) # Register the user blueprint
     api.register_blueprint(client_blp) # Register the client blueprint
+    api.register_blueprint(article_blp) # Register the article blueprint
+    api.register_blueprint(sale_blp) # Register the sale blueprint
 
     return app

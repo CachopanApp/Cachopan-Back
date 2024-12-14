@@ -1,6 +1,8 @@
 from app.extensions import db
 from sqlalchemy import Column, Integer, String
 from .client import Client
+from .article import Article
+from .sale import Sale
 
 class User(db.Model):
 
@@ -11,3 +13,5 @@ class User(db.Model):
 
     # ORM relationships
     clients = db.relationship('Client', back_populates='user', cascade='all, delete-orphan')
+    articles = db.relationship('Article', back_populates='user', cascade='all, delete-orphan')
+    sales = db.relationship('Sale', back_populates='user', cascade='all, delete-orphan')

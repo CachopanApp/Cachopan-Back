@@ -77,9 +77,9 @@ def update_client(client, client_id):
     if client['number'] and client['number'] != client_to_update.number and Client.query.filter_by(user_id=client_to_update.user_id, number=client['number']).first():
         return abort(409, description="El número ya existe para ese usuario")  
 
-    client_to_update.name = client['name']
-    client_to_update.email = client['email']
-    client_to_update.number = client['number']
+    if (client['name'] is not None): client_to_update.name = client['name']
+    if (client['email'] is not None): client_to_update.email = client['email']
+    if (client['number'] is not None): client_to_update.number = client['number']
 
     db.session.commit()
 
