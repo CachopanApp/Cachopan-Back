@@ -8,6 +8,7 @@ class UserSchema(SQLAlchemyAutoSchema):
         exclude = ("id",)  # Excluir el campo 'id'
 
 class UserTokenSchema(Schema):
+    user_id = fields.Integer(required=True)
     access_token = fields.String(required=True)
     refresh_token = fields.String(required=True)
 

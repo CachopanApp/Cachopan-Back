@@ -40,6 +40,6 @@ def authenticate_user(data):
     if user and bcrypt.check_password_hash(user.password, data['password']):
         access_token = create_access_token(identity=str(user.id))
         refresh_token = create_refresh_token(identity=str(user.id))
-        return {"access_token": access_token, "refresh_token": refresh_token}
+        return {"user_id": user.id,"access_token": access_token, "refresh_token": refresh_token}
     
     return abort(401, description="Invalid credentials")

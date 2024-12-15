@@ -52,6 +52,7 @@ def create_app():
     db.init_app(app)
     bcrypt.init_app(app)
     jwt.init_app(app)
+    cors.init_app(app)
 
     # Initialize the API
     with app.app_context(): # This is necessary to avoid the following error: RuntimeError: application not registered on db instance and no application bound to current context
