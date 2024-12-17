@@ -3,9 +3,9 @@ from app.extensions import db
 from flask import abort
 import re
 
-def get_all_clients(user_id):
-
-    clients = Client.query.filter_by(user_id=user_id).all()
+def get_all_clients(user_id, search):
+    # CLients with name like search
+    clients = Client.query.filter(Client.user_id == user_id, Client.name.ilike(f'%{search}%')).all()
     return clients
 
 def create_client(client):

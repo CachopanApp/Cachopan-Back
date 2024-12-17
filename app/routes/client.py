@@ -1,3 +1,4 @@
+from flask import request
 from flask.views import MethodView
 from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
@@ -8,13 +9,13 @@ client_blp = Blueprint('Client', 'client', url_prefix='/client', description='Cl
 
 class ClientResource(MethodView):
 
-    @client_blp.route('/getAll/<int:user_id>', methods=['GET'])
+    @client_blp.route('/getAll/<int:user_id>/<string:search>', methods=['GET'])
     @jwt_required()
     @client_blp.response(200, ClientOutputSchema(many=True))
     @client_blp.doc(security=[{"bearerAuth": []}])
-    def get_all(user_id):
+    def get_all(user_id, search):
         """Get all clients of a user"""
-        return get_all_clients(user_id)
+        return get_all_clients(user_id, search)
 
 
     @client_blp.route('/create', methods=['POST'])

@@ -8,13 +8,13 @@ article_blp = Blueprint('Article', 'article', url_prefix='/article', description
 
 class ArticleResource(MethodView):
 
-    @article_blp.route('/getAll/<int:user_id>', methods=['GET'])
+    @article_blp.route('/getAll/<int:user_id>/<string:search>', methods=['GET'])
     @jwt_required()
     @article_blp.response(200, ArticleOutputSchema(many=True))
     @article_blp.doc(security=[{"bearerAuth": []}]) 
-    def get_all(user_id):
+    def get_all(user_id, search):
         """Get all articles of a user"""
-        return get_all_articles(user_id)
+        return get_all_articles(user_id, search)
     
     @article_blp.route('/create', methods=['POST'])
     @jwt_required()

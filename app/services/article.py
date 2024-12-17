@@ -3,8 +3,8 @@ from app.extensions import db
 from flask import abort
 import re
 
-def get_all_articles(user_id):
-    articles = Article.query.filter_by(user_id=user_id).all()
+def get_all_articles(user_id, search):
+    articles = Article.query.filter( Article.user_id == user_id, Article.name.ilike(f'%{search}%')).all() 
     return articles
 
 def create_article(article):
