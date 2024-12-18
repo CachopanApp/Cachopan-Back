@@ -9,12 +9,14 @@ client_blp = Blueprint('Client', 'client', url_prefix='/client', description='Cl
 
 class ClientResource(MethodView):
 
-    @client_blp.route('/getAll/<int:user_id>/<string:search>', methods=['GET'])
+    @client_blp.route('/getAll/<int:user_id>', methods=['GET'])
+    @client_blp.doc(params={'search': {'description': 'Search term', 'in': 'query', 'type': 'string', 'required': False}})
     @jwt_required()
     @client_blp.response(200, ClientOutputSchema(many=True))
     @client_blp.doc(security=[{"bearerAuth": []}])
-    def get_all(user_id, search):
+    def get_all(user_id):
         """Get all clients of a user"""
+        search = request.args.get('search', '')
         return get_all_clients(user_id, search)
 
 

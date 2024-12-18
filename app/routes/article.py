@@ -1,3 +1,4 @@
+from flask import request
 from flask.views import MethodView
 from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
@@ -8,12 +9,14 @@ article_blp = Blueprint('Article', 'article', url_prefix='/article', description
 
 class ArticleResource(MethodView):
 
-    @article_blp.route('/getAll/<int:user_id>/<string:search>', methods=['GET'])
+    @article_blp.route('/getAll/<int:user_id>', methods=['GET'])
+    @article_blp.doc(params={'search': {'description': 'Search term', 'in': 'query', 'type': 'string', 'required': False}})
     @jwt_required()
     @article_blp.response(200, ArticleOutputSchema(many=True))
     @article_blp.doc(security=[{"bearerAuth": []}]) 
-    def get_all(user_id, search):
+    def get_all(user_id):
         """Get all articles of a user"""
+        search = request.args.get('search', '')
         return get_all_articles(user_id, search)
     
     @article_blp.route('/create', methods=['POST'])
