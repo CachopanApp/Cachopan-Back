@@ -6,14 +6,14 @@ import re
 
 def create_user(data):
 
-    regex_password = r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&_-])[A-Za-z\d@$!%*?&_-]{8,}$'
+    regex_password = r"^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{9,}$"
     regex_email = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 
     if not data['name'] or not data['password'] or not data['email']:
         return abort(400, description="No se permiten campos vacíos")
 
     if not re.match(regex_password, data['password']):
-        return abort(400, description="La contraseña debe tener al menos 8 caracteres, una letra, un número y un caracter especial")
+        return abort(400, description="La contraseña debe tener al menos 9 caracteres, una letra mayúscula, un número y un carácter especial")
     
     if not re.match(regex_email, data['email']):
         return abort(400, description="El email no es válido")
