@@ -17,7 +17,8 @@ class ArticleResource(MethodView):
     def get_all(user_id):
         """Get all articles of a user"""
         search = request.args.get('search', '')
-        return get_all_articles(user_id, search)
+        date = request.args.get('date','')
+        return get_all_articles(user_id, search, date)
     
     @article_blp.route('/create', methods=['POST'])
     @jwt_required()

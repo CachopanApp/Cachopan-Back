@@ -1,3 +1,4 @@
+from flask import request
 from flask.views import MethodView
 from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
@@ -9,20 +10,15 @@ sale_blp = Blueprint('Sale', 'sale', url_prefix='/sale', description='Sale relat
 class SaleResource(MethodView):
 
     @sale_blp.route('/getAllSalesFromUser/<int:user_id>', methods=['GET'])
+    @sale_blp.doc(params={'search': {'description': 'Search term', 'in': 'query', 'type': 'string', 'required': False}})
     @jwt_required()
     @sale_blp.response(200, SaleOutputSchema(many=True))
     @sale_blp.doc(security=[{"bearerAuth": []}]) 
     def get_all_sales_from_user(user_id):
         """Get all articles of a user"""
-        return get_all_sales_from_user(user_id)
-    
-    @sale_blp.route('/getAllSalesFromUserDate/<int:user_id>/<string:date>', methods=['GET'])
-    @jwt_required()
-    @sale_blp.response(200, SaleOutputSchema(many=True))
-    @sale_blp.doc(security=[{"bearerAuth": []}]) 
-    def get_all_sales_from_user_date(user_id, date):
-        """Get all articles of a user"""
-        return get_all_sales_from_user_date(user_id, date)
+        search = request.args.get('search', '')
+        date = request.args.get('date','')
+        return get_all_sales_from_user(user_id, search, date)
     
     @sale_blp.route('/create', methods=['POST'])
     @jwt_required()

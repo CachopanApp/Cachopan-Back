@@ -6,9 +6,10 @@ class Sale(db.Model):
     id = Column(Integer, autoincrement=True, primary_key=True)
     sale_date = Column(Date , primary_key=True)
     article_name = Column(String(50), nullable=False, unique=False)
+    article_unit = Column(String(50), nullable=False, unique=False)
     client_name = Column(String(50), nullable=False, unique=False)
     price_unit = Column(Double, nullable=False, unique=False)
-    quantity = Column(Integer, nullable=False, unique=False)
+    quantity = Column(Double, nullable=False, unique=False)
     total = Column(Double, nullable=False, unique=False)
     # Foreign key to user id
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)

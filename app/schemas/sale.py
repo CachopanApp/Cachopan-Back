@@ -7,7 +7,7 @@ class SaleInputSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Sale
         include_fk = True
-        exclude = ("id",)
+        exclude = ("id","article_unit","total",)
 
 class SaleOutputSchema(SQLAlchemyAutoSchema):
     sale_date = fields.Date(format='%d-%m-%Y')
@@ -17,12 +17,13 @@ class SaleOutputSchema(SQLAlchemyAutoSchema):
 
 class SaleUpdateSchema(SQLAlchemyAutoSchema):
     sale_date = fields.Date(format='%d-%m-%Y', allow_none=True)
-
     price_unit = fields.Float(allow_none=True)
     quantity = fields.Integer(allow_none=True)
     total = fields.Float(allow_none=True)
+    article_name = fields.String(allow_none=True)
+    client_name = fields.String(allow_none=True)
 
     class Meta:
         model = Sale
         include_fk = True
-        exclude = ("id", "user_id")
+        exclude = ("id", "user_id","article_unit","total",)

@@ -1,5 +1,5 @@
 from app.extensions import db
-from sqlalchemy import Column, Integer, Double, String, ForeignKey, UniqueConstraint
+from sqlalchemy import Column, Date, Integer, Double, String, ForeignKey, UniqueConstraint
 
 class Article(db.Model):
 
@@ -7,7 +7,8 @@ class Article(db.Model):
     name = Column(String(50), nullable=False, unique=False)
     price = Column(Double, nullable=False, unique=False)
     unit = Column(String(50), nullable=False, unique=False)
-    lot = Column(String(50), nullable=False, unique=False)
+    lot = Column(String(50), nullable=True, unique=False)
+    date = Column( Date, nullable=False, unique=False)
     # Foreign key to user id
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
 
@@ -16,5 +17,5 @@ class Article(db.Model):
 
     # Unique constraint to ensure two user can have the smae article name
     __table_args__ = (
-        UniqueConstraint('user_id', 'name', name='_user_article_name_uc'), # means user_id and name must be unique
+        UniqueConstraint('user_id', 'name', 'date', name='_user_article_name_uc'), # means in a sale from a specific date can't repeat the same article name and client name
     )
