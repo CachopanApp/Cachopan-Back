@@ -65,7 +65,7 @@ def update_article(article_data, article_id):
             if sale.price_unit == article.price:
                 sale.price_unit = article_data['price']
                 quantity = sale.quantity
-                sale.total_price = article_data['price'] * quantity
+                sale.total = article_data['price'] * quantity
                 
         article.price = article_data['price']
         
