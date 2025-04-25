@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a RESTful API built with Flask, providing endpoints for managing users and clients. The API supports operations such as creating, updating, deleting, and retrieving users and clients. It also includes JWT-based authentication for secure access.
+This project is a RESTful API built with Flask, providing endpoints for managing users and clients. The API supports operations such as creating, updating, deleting, and retrieving users and clients. It also includes JWT-based authentication for secure access and authorization.
 
 ## Project Structure
 
