@@ -18,7 +18,7 @@ class SaleOutputSchema(SQLAlchemyAutoSchema):
 class SaleUpdateSchema(SQLAlchemyAutoSchema):
     sale_date = fields.Date(format='%d-%m-%Y', allow_none=True)
     price_unit = fields.Float(allow_none=True)
-    quantity = fields.Integer(allow_none=True)
+    quantity = fields.Float(allow_none=True)
     total = fields.Float(allow_none=True)
     article_name = fields.String(allow_none=True)
     client_name = fields.String(allow_none=True)

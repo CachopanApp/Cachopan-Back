@@ -10,7 +10,8 @@ sale_blp = Blueprint('Sale', 'sale', url_prefix='/sale', description='Sale relat
 class SaleResource(MethodView):
 
     @sale_blp.route('/getAllSalesFromUser/<int:user_id>', methods=['GET'])
-    @sale_blp.doc(params={'search': {'description': 'Search term', 'in': 'query', 'type': 'string', 'required': False}})
+    @sale_blp.doc(params={'search': {'description': 'Search term', 'in': 'query', 'type': 'string', 'required': False},
+                          'date': {'description': 'Date', 'in': 'query', 'type': 'string', 'required': False}})
     @jwt_required()
     @sale_blp.response(200, SaleOutputSchema(many=True))
     @sale_blp.doc(security=[{"bearerAuth": []}]) 
