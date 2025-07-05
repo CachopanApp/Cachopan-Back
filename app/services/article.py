@@ -72,6 +72,8 @@ def update_article(article_data, article_id):
 
     if 'lot' in article_data and article_data['lot']:
         article.lot = article_data['lot']
+        for sale in sales:
+            sale.article_lot = article_data['lot']
     if 'user_id' in article_data and article_data['user_id'] is not None:
         article.user_id = article_data['user_id']
     
