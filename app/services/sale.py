@@ -15,6 +15,18 @@ def get_all_sales_from_user(user_id, search, date):
     sales = query.all()
     return sales
 
+def get_all_sales_from_article(user_id, search, date):
+    query = Sale.query.filter(Sale.user_id == user_id)
+    
+    if date:
+        query = query.filter(Sale.sale_date == date)
+    
+    if search:
+        query = query.filter(Sale.article_name.ilike(f'%{search}%'))
+    
+    sales = query.all()
+    return sales
+
 def create_sale(sale):
     
     if sale['user_id'] == "" or sale['sale_date'] == "" or sale['price_unit'] == "" or sale['article_name'] == "" \

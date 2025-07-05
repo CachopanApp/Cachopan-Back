@@ -21,6 +21,18 @@ class SaleResource(MethodView):
         date = request.args.get('date','')
         return get_all_sales_from_user(user_id, search, date)
     
+    @sale_blp.route('/getAllSalesFromArticle/<int:user_id>', methods=['GET'])
+    @sale_blp.doc(params={'search': {'description': 'Search term', 'in': 'query', 'type': 'string', 'required': False},
+                          'date': {'description': 'Date', 'in': 'query', 'type': 'string', 'required': False}})
+    @jwt_required()
+    @sale_blp.response(200, SaleOutputSchema(many=True))
+    @sale_blp.doc(security=[{"bearerAuth": []}]) 
+    def get_all_sales_from_article(user_id):
+        """Get all articles of a user"""
+        search = request.args.get('search', '')
+        date = request.args.get('date','')
+        return get_all_sales_from_article(user_id, search, date)
+    
     @sale_blp.route('/create', methods=['POST'])
     @jwt_required()
     @sale_blp.arguments(SaleInputSchema)
