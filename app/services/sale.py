@@ -44,8 +44,9 @@ def create_sale(sale):
     new_sale = Sale(user_id=sale['user_id'], sale_date=sale['sale_date'], price_unit=sale['price_unit'],\
                      article_name=sale['article_name'], article_unit=article.unit, article_lot=sale['article_lot'], client_name=sale['client_name'], quantity=sale['quantity'], total=total)
     
-    if Sale.query.filter_by(user_id=sale['user_id'], article_name=sale['article_name'], sale_date=sale['sale_date'], client_name=sale['client_name']).first():
-        return abort(409, description="La venta ya existe para ese usuario")
+    if Sale.query.filter_by(user_id=sale['user_id'], article_name=sale['article_name'], sale_date=sale['sale_date'], client_name=sale['client_name'], 
+                            price_unit=sale['price_unit'] ).first():
+        return abort(409, description="La venta ya existe para ese usuario en esta fecha, con ese mismo precio unitario")
 
     db.session.add(new_sale)
     db.session.commit()

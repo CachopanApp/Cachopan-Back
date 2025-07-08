@@ -20,5 +20,6 @@ class Sale(db.Model):
 
     # Unique constraint to ensure two user can have the same article name
     __table_args__ = (
-        UniqueConstraint('user_id', 'sale_date', 'article_name', 'client_name', name='_user_sale_name_uc'), # means in a sale from a specific date can't repeart the same article name and client name
+        UniqueConstraint('user_id', 'sale_date', 'article_name', 'client_name',
+            'price_unit',  name='_user_sale_name_uc'), # means in a sale from a specific date can't repeat the same article name and client name
     )

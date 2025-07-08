@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_migrate import Migrate
 from flask_smorest import Api
 from werkzeug.exceptions import HTTPException
 from flask import jsonify
@@ -53,6 +54,8 @@ def create_app():
     bcrypt.init_app(app)
     jwt.init_app(app)
     cors.init_app(app)
+
+    migrate = Migrate(app, db)  # Initialize Flask-Migrate
 
     # Initialize the API
     with app.app_context(): # This is necessary to avoid the following error: RuntimeError: application not registered on db instance and no application bound to current context
