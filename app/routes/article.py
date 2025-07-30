@@ -28,6 +28,18 @@ class ArticleResource(MethodView):
     def post(article):
         """Create a new article"""
         return create_article(article)
+
+    # Duplicate the articles from the last day with articles
+    @article_blp.route('/duplicate', methods=['POST'])
+    @jwt_required()
+    @article_blp.response(201, ArticleOutputSchema(many=True))
+    @article_blp.doc(security=[{"bearerAuth": []}])
+    def duplicate():
+        """Duplicate articles from the last day"""
+        data = request.get_json()
+        date_to_insert = data.get('date')
+        user_id = data.get('user_id')
+        return duplicate_articles(date_to_insert, user_id)
     
     @article_blp.route('/get/<int:article_id>', methods=['GET'])
     @jwt_required()

@@ -33,6 +33,44 @@ def create_article(article):
 
     return new_article
 
+# Duplicate the articles from the last day with articles
+def duplicate_articles(date_to_insert, user_id):
+
+    # Get the last day in the database with articles for the user
+    last_day = db.session.query(Article.date).filter(Article.user_id == user_id).order_by(Article.date.desc()).first()
+    if not last_day:
+        return abort(404, description="No hay artículos para duplicar")
+    
+    last_day = last_day[0]
+    # Get all articles from the last day
+    articles = Article.query.filter(Article.date == last_day, Article.user_id == user_id).all()
+
+    # Duplicate the articles
+    duplicated_articles = []
+    for article in articles:
+        # Verificar si ya existe un artículo igual para el usuario, nombre y fecha actual
+        exists = Article.query.filter_by(
+            user_id=article.user_id,
+            name=article.name,
+            date= date_to_insert
+        ).first()
+        if exists:
+            continue  
+
+        new_article = Article(
+            name=article.name,
+            price=article.price,
+            unit=article.unit,
+            lot=article.lot,
+            user_id=article.user_id,
+            date= date_to_insert
+        )
+        db.session.add(new_article)
+        duplicated_articles.append(new_article)
+
+    db.session.commit()
+    return duplicated_articles
+
 def get_article(article_id):
         
         article = Article.query.get(article_id)
