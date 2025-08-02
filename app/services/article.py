@@ -33,43 +33,66 @@ def create_article(article):
 
     return new_article
 
-# Duplicate the articles from the last day with articles
 def duplicate_articles(date_to_insert, user_id):
-
     # Get the last day in the database with articles for the user
-    last_day = db.session.query(Article.date).filter(Article.user_id == user_id).order_by(Article.date.desc()).first()
-    if not last_day:
+    last_day_result = db.session.query(Article.date).filter(Article.user_id == user_id).order_by(Article.date.desc()).first()
+    if not last_day_result:
         return abort(404, description="No hay artículos para duplicar")
-    
-    last_day = last_day[0]
+
+    last_day = last_day_result[0]
+
     # Get all articles from the last day
-    articles = Article.query.filter(Article.date == last_day, Article.user_id == user_id).all()
+    articles_to_duplicate = Article.query.filter(Article.date == last_day, Article.user_id == user_id).all()
+    if not articles_to_duplicate:
+        return abort(404, description="No hay artículos para duplicar en la fecha proporcionada")
 
-    # Duplicate the articles
-    duplicated_articles = []
-    for article in articles:
-        # Verificar si ya existe un artículo igual para el usuario, nombre y fecha actual
-        exists = Article.query.filter_by(
-            user_id=article.user_id,
-            name=article.name,
-            date= date_to_insert
-        ).first()
-        if exists:
-            continue  
+    duplicated_articles_list = []
+    try:
+        for article in articles_to_duplicate:
+            # Check if an identical article already exists for the user, name, and current date_to_insert
+            # This check is crucial to prevent re-inserting on retry after a partial failure
+            exists = Article.query.filter_by(
+                user_id=article.user_id,
+                name=article.name,
+                date=date_to_insert
+            ).first()
 
-        new_article = Article(
-            name=article.name,
-            price=article.price,
-            unit=article.unit,
-            lot=article.lot,
-            user_id=article.user_id,
-            date= date_to_insert
-        )
-        db.session.add(new_article)
-        duplicated_articles.append(new_article)
+            if exists:
+                # If an article already exists (e.g., from a previous partial run that committed),
+                # you might want to log this or decide how to handle it.
+                # For a clean rollback, we generally want to avoid partial commits.
+                # Since we are doing a single commit at the end, 'exists' here means
+                # it exists from a *previous, completed transaction*.
+                print(f"DEBUG: El artículo ya existe para el usuario {article.user_id}, nombre {article.name} y fecha {date_to_insert}. Saltando duplicación.")
+                continue # Skip this article
 
-    db.session.commit()
-    return duplicated_articles
+            new_article = Article(
+                name=article.name,
+                price=article.price,
+                unit=article.unit,
+                lot=article.lot,
+                user_id=article.user_id,
+                date=date_to_insert
+            )
+            # Add the new article to the session. It's not yet committed to the DB.
+            db.session.add(new_article)
+            duplicated_articles_list.append(new_article)
+
+        # If all additions were successful, commit the entire transaction
+        db.session.commit()
+        print(f"Duplicando artículos para user_id={user_id} en fecha={date_to_insert}: {[a.name for a in duplicated_articles_list]}")
+        print("Commit realizado")
+        return duplicated_articles_list
+
+    except Exception as e:
+        # If any error occurs during the process (e.g., a database constraint violation
+        # not caught by your 'exists' check, or a network issue during commit)
+        # then roll back all changes made in this session.
+        db.session.rollback()
+        print(f"ERROR: Fallo al duplicar artículos para user_id={user_id} en fecha={date_to_insert}. Se realizó un rollback: {e}")
+        # Re-raise the exception or abort with a 500 status code
+        # depending on how you want to handle internal errors.
+        abort(500, description=f"Error al duplicar artículos: {e}")
 
 def get_article(article_id):
         
