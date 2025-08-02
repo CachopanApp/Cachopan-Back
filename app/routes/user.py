@@ -4,11 +4,11 @@ from app.schemas.user import *
 from app.services.user import *
 from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
 
-user_blp = Blueprint('User', 'user', url_prefix='/user', description='User related operations')
+user_blp = Blueprint('User', 'user', url_prefix='/users', description='User related operations')
 
 class UserResource(MethodView):
 
-    @user_blp.route('/create', methods=['POST'])
+    @user_blp.route('', methods=['POST'])
     @user_blp.arguments(UserSchema)
     @user_blp.response(201, UserSchema)
     def post(user):

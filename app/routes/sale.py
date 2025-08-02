@@ -5,13 +5,14 @@ from flask_smorest import Blueprint
 from app.schemas.sale import *
 from app.services.sale import *
 
-sale_blp = Blueprint('Sale', 'sale', url_prefix='/sale', description='Sale related operations')
+sale_blp = Blueprint('Sale', 'sale', url_prefix='/sales', description='Sale related operations')
 
 class SaleResource(MethodView):
 
-    @sale_blp.route('/getAllSalesFromUser/<int:user_id>', methods=['GET'])
+    @sale_blp.route('/users/<int:user_id>', methods=['GET'])
     @sale_blp.doc(params={'search': {'description': 'Search term', 'in': 'query', 'type': 'string', 'required': False},
-                          'date': {'description': 'Date', 'in': 'query', 'type': 'string', 'required': False}})
+                          'date': {'description': 'Date', 'in': 'query', 'type': 'string', 'required': False}
+                        })
     @jwt_required()
     @sale_blp.response(200, SaleOutputSchema(many=True))
     @sale_blp.doc(security=[{"bearerAuth": []}]) 
@@ -21,7 +22,7 @@ class SaleResource(MethodView):
         date = request.args.get('date','')
         return get_all_sales_from_user(user_id, search, date)
     
-    @sale_blp.route('/getAllSalesFromArticle/<int:user_id>', methods=['GET'])
+    @sale_blp.route('/articles/<int:user_id>', methods=['GET'])
     @sale_blp.doc(params={'search': {'description': 'Search term', 'in': 'query', 'type': 'string', 'required': False},
                           'date': {'description': 'Date', 'in': 'query', 'type': 'string', 'required': False}})
     @jwt_required()
@@ -33,7 +34,7 @@ class SaleResource(MethodView):
         date = request.args.get('date','')
         return get_all_sales_from_article(user_id, search, date)
     
-    @sale_blp.route('/create', methods=['POST'])
+    @sale_blp.route('', methods=['POST'])
     @jwt_required()
     @sale_blp.arguments(SaleInputSchema)
     @sale_blp.response(201, SaleOutputSchema)
@@ -42,7 +43,7 @@ class SaleResource(MethodView):
         """Create a new article"""
         return create_sale(sale)
     
-    @sale_blp.route('/get/<int:sale_id>', methods=['GET'])
+    @sale_blp.route('/<int:sale_id>', methods=['GET'])
     @jwt_required()
     @sale_blp.response(200, SaleOutputSchema)
     @sale_blp.doc(security=[{"bearerAuth": []}])
@@ -50,7 +51,7 @@ class SaleResource(MethodView):
         """Get an article by id"""
         return get_sale(sale_id)
     
-    @sale_blp.route('/update/<int:sale_id>', methods=['PUT'])
+    @sale_blp.route('/<int:sale_id>', methods=['PUT'])
     @jwt_required()
     @sale_blp.arguments(SaleUpdateSchema)
     @sale_blp.response(200, SaleOutputSchema)
@@ -59,7 +60,7 @@ class SaleResource(MethodView):
         """Update an article by id"""
         return update_sale(sale, sale_id)
     
-    @sale_blp.route('/delete/<int:sale_id>', methods=['DELETE'])
+    @sale_blp.route('/<int:sale_id>', methods=['DELETE'])
     @jwt_required()
     @sale_blp.response(204)
     @sale_blp.doc(security=[{"bearerAuth": []}])
