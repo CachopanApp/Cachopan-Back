@@ -44,6 +44,9 @@ class ArticleResource(MethodView):
         data = request.get_json()
         date_to_insert = data.get('date')
         user_id = data.get('user_id')
+        print(f"DEBUG: {date_to_insert}, {user_id}")
+        if not date_to_insert or not user_id:
+            return abort(400, description="Se han de proporcionar la fecha y el ID del usuario")
         return duplicate_articles(date_to_insert, user_id)
     
     @article_blp.route('/<int:article_id>', methods=['GET'])
