@@ -222,10 +222,6 @@ LICENSE
 
 Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
 
-## Contact
-
-For any inquiries or support, please contact [your-email@example.com](mailto:your-email@example.com).
-
 ---
 
 Enjoy using the API! 🚀
