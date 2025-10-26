@@ -1,5 +1,5 @@
 from app.extensions import db
-from sqlalchemy import Column, Date, Integer, Double, String, ForeignKey, UniqueConstraint
+from sqlalchemy import Column, Date, Integer, Double, String, ForeignKey, Text, UniqueConstraint
 
 class Article(db.Model):
 
@@ -8,7 +8,8 @@ class Article(db.Model):
     price = Column(Double, nullable=False, unique=False)
     unit = Column(String(50), nullable=False, unique=False)
     lot = Column(String(50), nullable=True, unique=False)
-    date = Column( Date, nullable=False, unique=False)
+    notes = Column(Text, nullable=True, unique=False, default=None)
+    date = Column(Date, nullable=False, unique=False)
     # Foreign key to user id
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False, unique=False)
 

@@ -20,6 +20,7 @@ class ArticleUpdateSchema(SQLAlchemyAutoSchema):
     price = fields.Float(allow_none=True)
     unit = fields.String(allow_none=True)
     lot = fields.String(allow_none=True)
+    notes = fields.String(allow_none=True)
     user_id = fields.Integer(allow_none=True)
 
     class Meta:

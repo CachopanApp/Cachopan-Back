@@ -137,6 +137,8 @@ def update_article(article_data, article_id):
             sale.article_lot = article_data['lot']
     if 'user_id' in article_data and article_data['user_id'] is not None:
         article.user_id = article_data['user_id']
+    if 'notes' in article_data:
+        article.notes = article_data['notes']
     
     try:
         # Guardar los cambios en la base de datos
