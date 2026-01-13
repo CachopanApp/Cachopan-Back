@@ -4,7 +4,7 @@ from flask import abort
 import re
 
 def get_all_clients(user_id, search):
-    # CLients with name like search
+    # Clients with name like search
     clients = Client.query.filter(Client.user_id == user_id, Client.name.ilike(f'%{search}%')).all()
     return clients
 

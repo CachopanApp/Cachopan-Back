@@ -33,8 +33,6 @@ def create_sale(sale):
         or sale['client_name'] == "" or sale['quantity'] == "":
         return abort(400, description="Se han de rellenar todos los campos")
     
-    # Obtener la unidad del articulo
-
     article = Article.query.filter_by(user_id=sale['user_id'], name=sale['article_name']).first()
     if not article:
         return abort(404, description="El artículo no existe")
@@ -73,7 +71,7 @@ def update_sale(sale_data, sale_id):
     if 'quantity' in sale_data and sale_data['quantity'] is not None:
         sale.quantity = sale_data['quantity']
 
-    # Recalcular el total si price_unit o quantity han cambiado
+    # Recalculating total
     if 'price_unit' in sale_data or 'quantity' in sale_data:
         sale.total = round(sale.price_unit * sale.quantity,2)
     

@@ -5,7 +5,7 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 class UserSchema(SQLAlchemyAutoSchema):
     class Meta: # This class is necessary to define the model to be serialized
         model = User
-        exclude = ("id",)  # Excluir el campo 'id'
+        exclude = ("id",)  # Excluding the id
 
 class UserTokenSchema(Schema):
     user_id = fields.Integer(required=True)

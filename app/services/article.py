@@ -2,7 +2,6 @@ from app.models.article import Article
 from app.models.sale import Sale
 from app.extensions import db
 from flask import abort
-import re
 
 def get_all_articles(user_id, search, date):
     query = Article.query.filter(Article.user_id == user_id)
@@ -109,10 +108,10 @@ def update_article(article_data, article_id):
     if not article:
         return abort(404, description="El artículo no existe")
     
-    # Verificar si el artículo está en una venta con el mismo nombre
-    sales = Sale.query.filter_by(article_name=article.name).all()
+    # Verify if the article is in a sale within the same date
+    sales = Sale.query.filter_by(article_name=article.name, sale_date=article.date).all()
     
-    # Actualizar los atributos del artículo
+    # Updating the article data
     if 'name' in article_data and article_data['name']:
         article.name = article_data['name']
         for sale in sales:
@@ -141,7 +140,6 @@ def update_article(article_data, article_id):
         article.notes = article_data['notes']
     
     try:
-        # Guardar los cambios en la base de datos
         db.session.commit()
     except Exception as e:
         db.session.rollback()
