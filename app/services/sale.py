@@ -13,6 +13,13 @@ def get_all_sales_from_user(user_id, search, date):
         query = query.filter(Sale.client_name.ilike(f'%{search}%'))
     
     sales = query.all()
+
+    # Round values to 3 decimals
+    for sale in sales:
+        sale.quantity = round(sale.quantity, 3)
+        sale.price_unit = round(sale.price_unit, 3)
+        sale.total = round(sale.total, 3)
+
     return sales
 
 def get_all_sales_from_article(user_id, search, date):
@@ -25,6 +32,13 @@ def get_all_sales_from_article(user_id, search, date):
         query = query.filter(Sale.article_name.ilike(f'%{search}%'))
     
     sales = query.all()
+
+    # Round values to 3 decimals
+    for sale in sales:
+        sale.quantity = round(sale.quantity, 3)
+        sale.price_unit = round(sale.price_unit, 3)
+        sale.total = round(sale.total, 3)
+        
     return sales
 
 def create_sale(sale):
@@ -33,7 +47,7 @@ def create_sale(sale):
         or sale['client_name'] == "" or sale['quantity'] == "":
         return abort(400, description="Se han de rellenar todos los campos")
     
-    article = Article.query.filter_by(user_id=sale['user_id'], name=sale['article_name']).first()
+    article = Article.query.filter_by(user_id=sale['user_id'], name=sale['article_name'], date=sale['sale_date']).first()
     if not article:
         return abort(404, description="El artículo no existe")
     
